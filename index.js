@@ -3,14 +3,14 @@ const cors = require('cors');
 const puppet = require('./puppet')
 
 const corsOptions = {
-  origin: 'http://localhost:8001',
+  origin: 'http://localhost:8000',
   optionsSuccessStatus: 200
 };
 
 const app = express();
 app.use(cors(corsOptions));
 
-const port = 8001;
+const port = 3876;
 app.listen(port, () => {
   console.log(`ImageGenerator listening on port ${port}`)
 })
