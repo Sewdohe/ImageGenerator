@@ -6,7 +6,9 @@ exports.generateImage = async function (req, res) {
 
   const { title, description, img } = await req.query;
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/google-chrome',
+  });
 
   const page = await browser.newPage();
 
