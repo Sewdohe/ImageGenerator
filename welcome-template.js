@@ -1,53 +1,90 @@
 exports.getHtml = function (title, description, img) {
 
   var css = `
-    html, body {
-      height: 100%;
-      width: 100%;
+    html: {
+      background: transparent !important;
     }
-    
-    .title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 55px;
+    body {
+      background: transparent !important;
     }
-    
-    .description {
-      font-size: 25px;
-      color: #676565
+    .card {
+      width: 330px;
+      height: 80px;
+      border-radius: 8px;
+      box-sizing: border-box;
+      padding: 10px 15px;
+      background-color: #181825;
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 15px;
     }
-    
-    .image-text{
-      width: 80%
+    .wave {
+      position: absolute;
+      transform: rotate(90deg);
+      left: -31px;
+      top: 32px;
+      width: 80px;
+      fill: #04e4003a;
     }
-    
-    .bg {
-      background-image: url(${img});
-      background-size: 1200px 630px;
-      background-repeat: no-repeat;
-      display: block;
-      width:60%;
-      height:100%;
-    }`
+    .icon-container {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+    .icon {
+      width: 32px;
+      height: 32px;
+      color: #269b24;
+    }
+    .message-text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      flex-grow: 1;
+    }
+    .message-text,
+    .sub-text {
+      margin: 0;
+      cursor: default;
+    }
+    .message-text {
+      color: #cba6f7;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .sub-text {
+      font-size: 14px;
+      color: #cdd6f4;
+    }
+    .cross-icon {
+      width: 18px;
+      height: 18px;
+      color: #555;
+      cursor: pointer;
+    }
+  `
 
   return `
   <!doctype html>
   <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Bootstrap demo</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    </head>
-    
-    <body class="d-flex align-items-center">
-      <div class="m-5 image-text">
-        <div class="title">${title}</div>
-        <p class="description mt-3">${description}</p>
-      </div>
-      <div class="bg"></div>
+    <body>
+      <div class="card" id="card">
+        <div class="icon-container">
+          <img class="icon" src=${img} />
+        </div>
+        <div class="message-text-container">
+          <p class="message-text">${title}</p>
+          <p class="sub-text">${description}</p>
+        </div>
     </body>
     <style>${css}</style>
   </html>`

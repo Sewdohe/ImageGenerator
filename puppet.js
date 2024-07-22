@@ -12,14 +12,15 @@ exports.generateImage = async function (req, res) {
   });
 
   const page = await browser.newPage();
-
-  await page.setViewport({ width: 1200, height: 630 });
-
+  await page.setViewport({ width: 353, height: 103 });
   await page.setContent(template.getHtml(title, description, img));
+  await page.evaluate(() => {
+    document.body.style.background = 'transparent';
+  })
 
-  const image = await page.screenshot({ type: 'jpeg' });
+  const image = await page.screenshot({ type: 'png', omitBackground: true });
 
-  const imagePath = __dirname + `/public/images/${title}.jpeg`;
+  const imagePath = __dirname + `/public/images/${title}.png`;
   console.log('Path to generated image: ' + imagePath)
   console.log('attempting image write to the disk')
   fs.appendFile(imagePath, image, () => {
