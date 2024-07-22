@@ -9,7 +9,7 @@ const corsOptions = {
 
 const app = express();
 app.use(cors(corsOptions));
-app.use(express.static('/public'))
+app.use(express.static('public'))
 
 const port = 3876;
 app.listen(port, () => {
