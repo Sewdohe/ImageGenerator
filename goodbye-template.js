@@ -28,7 +28,7 @@ exports.getHtml = function (user, img) {
       height: 130%;
       clip: auto;
       left: 0px;
-      background: #a6e3a1;
+      background: #f38ba8;
     }
     .icon-container {
       width: 35px;
@@ -57,7 +57,7 @@ exports.getHtml = function (user, img) {
       cursor: default;
     }
     .message-text {
-      color: #cba6f7;
+      color: #f2cdcd;
       font-size: 17px;
       font-weight: 700;
     }
@@ -90,8 +90,8 @@ exports.getHtml = function (user, img) {
           <img class="icon" src=${img} />
         </div>
         <div class="message-text-container">
-          <p class="message-text">${user} joined the server</p>
-          <p class="welcome-text">Welcome to the guild!</p>
+          <p class="message-text">${user} left the server</p>
+          <p class="welcome-text">Goodbye!</p>
         </div>
     </body>
     <style>${css}</style>

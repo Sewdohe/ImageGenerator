@@ -20,5 +20,6 @@ app.get('/', (_req, res) => {
   res.send('Hello World!')
 });
 
-app.get('/welcome-image', puppet.generateImage);
+app.get('/welcome-image', puppet.generateHelloImage);
+app.get('/goodbye-image', puppet.generateGoodbyeImage);
 
