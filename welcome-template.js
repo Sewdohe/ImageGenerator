@@ -40,9 +40,10 @@ exports.getHtml = function (user, img) {
       margin-left: 8px;
     }
     .icon {
-      width: 32px;
-      height: 32px;
+      width: 42px;
+      height: 42px;
       color: #269b24;
+      border-radius: 50%;
     }
     .message-text-container {
       display: flex;

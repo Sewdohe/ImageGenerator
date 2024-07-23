@@ -31,8 +31,8 @@ exports.getHtml = function (user, img) {
       background: #f38ba8;
     }
     .icon-container {
-      width: 35px;
-      height: 35px;
+      width: 42px;
+      height: 42px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -40,9 +40,10 @@ exports.getHtml = function (user, img) {
       margin-left: 8px;
     }
     .icon {
-      width: 32px;
-      height: 32px;
+      width: 42px;
+      height: 42px;
       color: #269b24;
+      border-radius: 50%;
     }
     .message-text-container {
       display: flex;
