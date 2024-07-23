@@ -113,6 +113,7 @@ exports.generateStatusCard = async function (req, res) {
   fs.appendFile(writePath, image, () => {
     console.log('wrote image to disk')
   })
+  page.close();
   res.statusCode = 200;
   res.setHeader('Content-Type', `text/html`);
   res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
