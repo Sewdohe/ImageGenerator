@@ -69,8 +69,6 @@ exports.getHtml = function(serverData, host, icon) {
   // using the join command on the array avoids any extra commas!!! :D
   var players = playersWComma.join("");
 
-  console.log(players)
-
   return `
   <!doctype html>
   <html lang="en">
