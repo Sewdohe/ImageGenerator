@@ -87,8 +87,7 @@ exports.generateStatusCard = async function (req, res) {
       };
     })
   );
-  // serverData.host = serverResponse.data.host;
-  // serverData.icon = serverResponse.data.icon;
+
   const host = serverResponse.data.host;
   const icon = serverResponse.data.icon;
 
@@ -105,13 +104,16 @@ exports.generateStatusCard = async function (req, res) {
   })
 
   const image = await page.screenshot({ type: 'png', omitBackground: true });
+  const fileName = 'status-' + Date.now().toString() + '.png';
 
-  const imagePath = __dirname + `/public/images/${Date.now()}.png`;
-  fs.appendFile(imagePath, image, () => {
+  const writePath = __dirname + `/public/images/` + fileName;
+  fs.appendFile(writePath, image, () => {
     console.log('wrote image to disk')
   })
   res.statusCode = 200;
-  res.setHeader('Content-Type', `image/jpeg`);
+  res.setHeader('Content-Type', `application/json`);
   res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
-  res.end(image);
+  res.send({
+    url: `https://generator.divnectar.com` + `/public/images/${fileName}`
+  });
 }
