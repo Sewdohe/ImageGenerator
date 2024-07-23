@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const puppet = require('./puppet')
+const axios = require('axios')
 
 const corsOptions = {
   origin: 'http://localhost:8000',
@@ -22,4 +23,5 @@ app.get('/', (_req, res) => {
 
 app.get('/welcome-image', puppet.generateHelloImage);
 app.get('/goodbye-image', puppet.generateGoodbyeImage);
+app.get('/server-status', puppet.generateStatusCard);
 

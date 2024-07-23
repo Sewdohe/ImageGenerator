@@ -1,6 +1,9 @@
-const template = require('./goodbye-template');
+const goodbye_template = require('./goodbye-template');
+const hello_template = require('./welcome-template');
+const statuscard_template = require('./statuscard-template');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const axios = require('axios');
 
 exports.generateHelloImage = async function (req, res) {
 
@@ -13,7 +16,7 @@ exports.generateHelloImage = async function (req, res) {
 
   const page = await browser.newPage();
   await page.setViewport({ width: 353, height: 103 });
-  await page.setContent(template.getHtml(user, img));
+  await page.setContent(hello_template.getHtml(user, img));
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
   })
@@ -45,7 +48,7 @@ exports.generateGoodbyeImage = async function (req, res) {
 
   const page = await browser.newPage();
   await page.setViewport({ width: 353, height: 103 });
-  await page.setContent(template.getHtml(user, img));
+  await page.setContent(goodbye_template.getHtml(user, img));
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
   })
@@ -64,3 +67,47 @@ exports.generateGoodbyeImage = async function (req, res) {
   res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
   res.end(image);
 };
+
+
+exports.generateStatusCard = async function (req, res) {
+  const { uri } = await req.query;
+  const req_uri = `https://api.mcstatus.io/v2/status/java/${uri}`
+  console.log(`making request to ${req_uri}....`)
+  const serverResponse = await axios.get(req_uri);
+
+  const playerList = serverResponse.data.players.list
+
+
+  const serverData = await Promise.all(
+    playerList.map(async (player) => {
+      const avatarResponse = await axios.get(`https://crafatar.com/avatars/${player.uuid}?size=100&overlay`);
+      return {
+        ...player,
+        avatar: avatarResponse.config.url, // Get the URL from the request configuration
+      };
+    })
+  );
+  // serverData.host = serverResponse.data.host;
+  // serverData.icon = serverResponse.data.icon;
+  const host = serverResponse.data.host;
+  const icon = serverResponse.data.icon;
+
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/google-chrome',
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+
+  const page = await browser.newPage();
+  await page.setViewport({ width: 500, height: 500 });
+  await page.setContent(statuscard_template.getHtml(serverData, host, icon));
+  await page.evaluate(() => {
+    document.body.style.background = 'transparent';
+  })
+
+  const image = await page.screenshot({ type: 'png', omitBackground: true });
+
+  res.statusCode = 200;
+  res.setHeader('Content-Type', `image/jpeg`);
+  res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
+  res.end(image);
+}

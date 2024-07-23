@@ -10,9 +10,11 @@
   "author": "Sewdohe",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "nodemon": "^3.1.4",
+    "pug": "^3.0.3",
     "puppeteer": "^22.13.1"
   }
 }
