@@ -22,18 +22,16 @@ exports.generateHelloImage = async function (req, res) {
   })
 
   const image = await page.screenshot({ type: 'png', omitBackground: true });
+  const fileName = 'hello-' + Date.now().toString() + '.png';
 
-  const imagePath = __dirname + `/public/images/${user}.png`;
-  console.log('Path to generated image: ' + imagePath)
-  console.log('attempting image write to the disk')
-  fs.appendFile(imagePath, image, () => {
+  const writePath = __dirname + `/public/images/` + fileName;
+  fs.appendFile(writePath, image, () => {
     console.log('wrote image to disk')
   })
-
   res.statusCode = 200;
-  res.setHeader('Content-Type', `image/jpeg`);
+  res.setHeader('Content-Type', `text/html`);
   res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
-  res.end(image);
+  res.send(`https://generator.divnectar.com` + `/public/images/${fileName}`);
 };
 
 
@@ -54,18 +52,16 @@ exports.generateGoodbyeImage = async function (req, res) {
   })
 
   const image = await page.screenshot({ type: 'png', omitBackground: true });
+  const fileName = 'goodbye-' + Date.now().toString() + '.png';
 
-  const imagePath = __dirname + `/public/images/${title}.png`;
-  console.log('Path to generated image: ' + imagePath)
-  console.log('attempting image write to the disk')
-  fs.appendFile(imagePath, image, () => {
+  const writePath = __dirname + `/public/images/` + fileName;
+  fs.appendFile(writePath, image, () => {
     console.log('wrote image to disk')
   })
-
   res.statusCode = 200;
-  res.setHeader('Content-Type', `image/jpeg`);
+  res.setHeader('Content-Type', `text/html`);
   res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
-  res.end(image);
+  res.send(`https://generator.divnectar.com` + `/public/images/${fileName}`);
 };
 
 
