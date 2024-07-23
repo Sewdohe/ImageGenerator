@@ -106,6 +106,10 @@ exports.generateStatusCard = async function (req, res) {
 
   const image = await page.screenshot({ type: 'png', omitBackground: true });
 
+  const imagePath = __dirname + `/public/images/${Date.now()}.png`;
+  fs.appendFile(imagePath, image, () => {
+    console.log('wrote image to disk')
+  })
   res.statusCode = 200;
   res.setHeader('Content-Type', `image/jpeg`);
   res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
