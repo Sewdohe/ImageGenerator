@@ -99,7 +99,14 @@ exports.generateStatusCard = async function (req, res) {
     document.body.style.background = 'transparent';
   })
 
-  const image = await page.screenshot({ type: 'png', omitBackground: true });
+  const card = await page.$('#card');
+  const bounding_box = await card.boundingBox();
+  const image = await card.screenshot({ type: 'png', omitBackground: true, clip: {
+    x: bounding_box.x,
+    y: bounding_box.y,
+    width: bounding_box.width,
+    height: bounding_box.height
+  } });
   const fileName = 'status-' + Date.now().toString() + '.png';
 
   const writePath = __dirname + `/public/images/` + fileName;
