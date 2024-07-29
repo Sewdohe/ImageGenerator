@@ -108,6 +108,7 @@ exports.generateStatusCard = async function (req, res, next) {
   console.log(    "setting viewport and view options on said page....")
   // await page.setViewport({ width: 500, height: 500 });
   await page.setContent(statuscard_template.getHtml(serverData, host, icon));
+  console.log(    "setting page content to desired template....");
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
   })
@@ -126,7 +127,7 @@ exports.generateStatusCard = async function (req, res, next) {
 
   const writePath = __dirname + `/public/images/` + fileName;
   fs.appendFile(writePath, image, () => {
-    console.log('   wrote image to disk')
+    console.log('    wrote image to disk')
   })
   try {
     await page.close()
