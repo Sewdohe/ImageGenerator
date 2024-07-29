@@ -98,10 +98,15 @@ exports.generateStatusCard = async function (req, res, next) {
   });
 
   console.log(    "creating empty page...")
-  const page = await browser.newPage();
+  var page;
+  try {
+    page = await browser.newPage();
+  } catch (error) {
+    console.log(`error occured when getting page: ${error}`);
+  }
 
   console.log(    "setting viewport and view options on said page....")
-  await page.setViewport({ width: 500, height: 500 });
+  // await page.setViewport({ width: 500, height: 500 });
   await page.setContent(statuscard_template.getHtml(serverData, host, icon));
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
