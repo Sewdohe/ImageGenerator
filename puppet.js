@@ -91,26 +91,26 @@ exports.generateStatusCard = async function (req, res, next) {
   const host = serverResponse.data.host;
   const icon = serverResponse.data.icon;
 
-  console.log("launching browser window...")
+  console.log(    "launching browser window...")
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome',
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
-  console.log("creating empty page...")
+  console.log(    "creating empty page...")
   const page = await browser.newPage();
 
-  console.log("setting viewport and view options on said page....")
+  console.log(    "setting viewport and view options on said page....")
   await page.setViewport({ width: 500, height: 500 });
   await page.setContent(statuscard_template.getHtml(serverData, host, icon));
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
   })
 
-  console.log("awaiting card element....")
+  console.log("    awaiting card element....")
   const card = await page.$('#card');
   const bounding_box = await card.boundingBox();
-  console.log("snapping screenshot of element...")
+  console.log("    snapping screenshot of element...")
   const image = await card.screenshot({ type: 'png', omitBackground: true, clip: {
     x: bounding_box.x,
     y: bounding_box.y,
@@ -121,12 +121,12 @@ exports.generateStatusCard = async function (req, res, next) {
 
   const writePath = __dirname + `/public/images/` + fileName;
   fs.appendFile(writePath, image, () => {
-    console.log('wrote image to disk')
+    console.log('   wrote image to disk')
   })
   try {
     await page.close()
   } catch (error) {
-    console.log(`An error occured: ${error}`)
+    console.log(`    An error occured: ${error}`)
   }
   // page.close();
   if (image) {
@@ -134,7 +134,7 @@ exports.generateStatusCard = async function (req, res, next) {
     res.setHeader('Content-Type', `text/html`);
     res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
     res.send(`https://generator.divnectar.com` + `/public/images/${fileName}`);
-    console.log("sent url response")
+    console.log("    sent url response")
   } else {
     throw new Error('COULDNT GET IMAGE')
   }
