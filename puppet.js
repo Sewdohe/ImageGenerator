@@ -65,7 +65,7 @@ exports.generateGoodbyeImage = async function (req, res) {
 };
 
 
-exports.generateStatusCard = async function (req, res) {
+exports.generateStatusCard = async function (req, res, next) {
   const { uri } = await req.query;
   const req_uri = `https://api.mcstatus.io/v2/status/java/${uri}`
   console.log(`making request to ${req_uri}....`)
@@ -113,9 +113,18 @@ exports.generateStatusCard = async function (req, res) {
   fs.appendFile(writePath, image, () => {
     console.log('wrote image to disk')
   })
-  page.close();
-  res.statusCode = 200;
-  res.setHeader('Content-Type', `text/html`);
-  res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
-  res.send(`https://generator.divnectar.com` + `/public/images/${fileName}`);
+  try {
+    await page.close()
+  } catch (error) {
+    console.log(`An error occured: ${error}`)
+  }
+  // page.close();
+  if (image) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', `text/html`);
+    res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
+    res.send(`https://generator.divnectar.com` + `/public/images/${fileName}`);
+  } else {
+    throw new Error('COULDNT GET IMAGE')
+  }
 }
