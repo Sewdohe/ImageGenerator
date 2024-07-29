@@ -5,6 +5,10 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const axios = require('axios');
 
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
 exports.generateHelloImage = async function (req, res) {
 
   const { user, img } = await req.query;
@@ -91,9 +95,13 @@ exports.generateStatusCard = async function (req, res, next) {
     executablePath: '/usr/bin/google-chrome',
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
+  await delay(200)
 
   const page = await browser.newPage();
+  await delay(200)
+
   await page.setViewport({ width: 500, height: 500 });
+  await delay(200)
   await page.setContent(statuscard_template.getHtml(serverData, host, icon));
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
