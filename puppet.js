@@ -134,6 +134,7 @@ exports.generateStatusCard = async function (req, res, next) {
   }
 
   console.log("    awaiting card element....")
+  sleep(1000)
   const card = await page.$('#card');
   const bounding_box = await card.boundingBox();
   console.log("    snapping screenshot of element...")
