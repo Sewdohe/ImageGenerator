@@ -80,15 +80,24 @@ exports.generateStatusCard = async function (req, res, next) {
   const playerList = serverResponse.data.players.list
 
 
-  const serverData = await Promise.all(
-    playerList.map(async (player) => {
-      const avatarResponse = await axios.get(`https://crafatar.com/avatars/${player.uuid}?size=100&overlay`);
-      return {
-        ...player,
-        avatar: avatarResponse.config.url, // Get the URL from the request configuration
-      };
-    })
-  );
+  console.log("fetching server data...")
+  var serverData;
+  try {
+    serverData = await Promise.all(
+      playerList.map(async (player) => {
+        const avatarResponse = await axios.get(`https://crafatar.com/avatars/${player.uuid}?size=100&overlay`);
+        return {
+          ...player,
+          avatar: avatarResponse.config.url, // Get the URL from the request configuration
+        };
+      })
+    );
+    if(serverData.ok) {
+      console.log("Got data with OK status")
+    }
+  } catch (error) {
+      console.log(`error occured getting player data: ${error}`)
+  }
 
   const host = serverResponse.data.host;
   const icon = serverResponse.data.icon;
