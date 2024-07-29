@@ -5,9 +5,6 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const axios = require('axios');
 
-function delay(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
 
 exports.generateHelloImage = async function (req, res) {
 
@@ -105,17 +102,21 @@ exports.generateStatusCard = async function (req, res, next) {
     console.log(`error occured when getting page: ${error}`);
   }
 
-  console.log(    "setting viewport and view options on said page....")
   // await page.setViewport({ width: 500, height: 500 });
+  console.log("    attempting setting page content to desired template....");
   try {
     await page.setContent(statuscard_template.getHtml(serverData, host, icon));
   } catch (error) {
     console.log(`There was an error setting page template: ${error}`)
   }
-  console.log(    "setting page content to desired template....");
-  await page.evaluate(() => {
-    document.body.style.background = 'transparent';
-  })
+  console.log("    attempting page evaluation...")
+  try {
+    await page.evaluate(() => {
+      document.body.style.background = 'transparent';
+    })
+  } catch (error) {
+    console.log(`Error during page evaluation: ${error}`)
+  }
 
   console.log("    awaiting card element....")
   const card = await page.$('#card');
