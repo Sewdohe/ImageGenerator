@@ -107,7 +107,11 @@ exports.generateStatusCard = async function (req, res, next) {
 
   console.log(    "setting viewport and view options on said page....")
   // await page.setViewport({ width: 500, height: 500 });
-  await page.setContent(statuscard_template.getHtml(serverData, host, icon));
+  try {
+    await page.setContent(statuscard_template.getHtml(serverData, host, icon));
+  } catch (error) {
+    console.log(`There was an error setting page template: ${error}`)
+  }
   console.log(    "setting page content to desired template....");
   await page.evaluate(() => {
     document.body.style.background = 'transparent';
