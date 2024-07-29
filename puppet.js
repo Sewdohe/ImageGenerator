@@ -6,6 +6,11 @@ const fs = require('fs');
 const axios = require('axios');
 
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 exports.generateHelloImage = async function (req, res) {
 
   const { user, img } = await req.query;
@@ -104,6 +109,7 @@ exports.generateStatusCard = async function (req, res, next) {
 
   // await page.setViewport({ width: 500, height: 500 });
   console.log("    attempting setting page content to desired template....");
+  delay(1000)
   try {
     await page.setContent(statuscard_template.getHtml(serverData, host, icon));
   } catch (error) {
