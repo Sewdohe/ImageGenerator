@@ -109,7 +109,7 @@ exports.generateStatusCard = async function (req, res, next) {
 
   // await page.setViewport({ width: 500, height: 500 });
   console.log("    attempting setting page content to desired template....");
-  delay(1000)
+  sleep(1000)
   try {
     await page.setContent(statuscard_template.getHtml(serverData, host, icon));
   } catch (error) {
